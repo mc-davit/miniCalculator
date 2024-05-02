@@ -54,6 +54,11 @@ let operation = symbol => {
     numEl.value += symbol;
 }
 let clear = () =>{
+    let arr = numEl.value.split('');
+    arr[arr.length - 1] = '';
+    numEl.value = arr.join('');
+}
+let allClear = () =>{
     numEl.value = '';
     sumEl.innerHTML = '';
 }
@@ -67,40 +72,40 @@ let neg = () =>{
     }
 }
 let sqrt = () =>{
-    let result = `${Math.round(eval(numEl.value) * 10000000) / 10000000}`;
-    sumEl.innerHTML = '= ' + Math.round(Math.sqrt(Number(result))* 10000000) / 10000000;
+    let result = `${Math.round(eval(numEl.value) * 10000) / 10000}`;
+    sumEl.innerHTML = '= ' + Math.round(Math.sqrt(Number(result))* 10000) / 10000;
     numEl.value = '√' + numEl.value;
 }
 let prcent = () =>{
-    let arr = numEl.value.split(' ')
-    if(!isNaN(arr[arr.length - 1])){
-        arr[arr.length - 1] /= 100
-        numEl.value = arr.join(' ')
+    let arr = numEl.value.split(' ');
+    if(!isNaN(parseFloat(arr[arr.length - 1]))){
+        arr[arr.length - 1] /= 100;
+        numEl.value = arr.join(' ');
     }
 }
 let equal = () => {
-    let result = `${Math.round(eval(numEl.value) * 10000000) / 10000000}`;
+    let result = `${Math.round(eval(numEl.value) * 10000) / 10000}`;
     sumEl.innerHTML = "= " + result;
 }
 let add = () =>{
-    operation(' + ')
+    operation('+')
 }
 let subtract = () =>{
-    operation(' - ')
+    operation('-')
 }
 let divide = () =>{
-    operation(' / ')
+    operation('/')
 }
 let multiply = () =>{
-    operation(' * ')
+    operation('*')
 }
 
 let opperations = [
-    'C', '√', '%', '=', 
-    '1', '2', '3', '/', 
-    '4', '5', '6', 'x', 
+    'C', '&radic;', '%', '=', 
+    '1', '2', '3', '&div;', 
+    '4', '5', '6', '&times;', 
     '7', '8', '9','+', 
-    '±', '0', '.', '-'
+    '&pm;', '0', '.', '-'
 ]
 let functions = [
     clear, sqrt, prcent, 
@@ -113,14 +118,22 @@ let gridContainer = document.querySelector('.grid-container')
 for(let i = 0; i < opperations.length; i++){
     let button = document.createElement('button');
     button.id = `but-${i}`;
-    button.textContent = opperations[i];
+    button.innerHTML = opperations[i];
     button.addEventListener('click', functions[i]);
     gridContainer.appendChild(button);
 }
-// ესეც ChatGPT-ის დამსახურება, ჩემი ვერსიით რომ შემექმნა ცვლადი
-// სახელით but_i(ეს ვიპოვე window-ის ალტერნატიულად როგორ გამეერთებინა ცვლადი და სახელი)
-// და მაგას ჰქონოდა id `but-${i}` მუშაობდა თითქმის, მაგრამ 
-// but_i.addEventListener('click', functions[i])-მა არ იმუშავა, სამწუხაროდ
+// ესეც ChatGPT-ის დამსახურება
+// gridContainer.innerHTML += `<button id='but-${i}'>${opperations[i]}</button>`
+// window['but' + i] = document.querySelector(`#but-${i}`)
+// window['but' + i].addEventListener('click', functions[i])
+// ---------------------------------------------------
+// let but_i = document.querySelector(`#but-${i}`)
+// but_i.addEventListener('click', functions[i])
+// ეს ორივე ვერსია რატომღაც მხოლოდ ბოლო button-ს უტოვებს event-ს
+// წესით but_i და window['but' + i] ერთი და იგივე რამეს აკეთებს
+
+let butC = document.getElementById('but-0')
+butC.addEventListener('dblclick', allClear)
 
 document.addEventListener('keydown', function(event){
     if (event.key == 'Enter' || event.key == 'Equal'){
