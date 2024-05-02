@@ -78,7 +78,7 @@ button {
     }
 }
 
-#but-c, #but-eq {
+#but-eq {
     grid-column: span 2;
 }
 #but-eq {

@@ -8,6 +8,7 @@ let butEq = document.getElementById("but-eq");
 let butDot = document.getElementById('but-.');
 let butNeg = document.getElementById('but-neg');
 let butC = document.getElementById('but-c');
+let butSqrt = document.getElementById('but-sqrt');
 
 for(let i = 0; i < 10; i++){
     let but_i = document.getElementById(`but-${i}`)
@@ -31,6 +32,10 @@ let neg = () =>{
     if(isNaN(numEl.value)){
         numEl.value = '';
     }
+}
+let sqrt = () =>{
+    sumEl.innerHTML = '= ' + Math.round(Math.sqrt(Number(numEl.value)) * 10000000) / 10000000;
+    numEl.value = '√' + numEl.value
 }
 let equal = () => {
     let result = `${Math.round(eval(numEl.value) * 10000000) / 10000000}`;
@@ -56,7 +61,8 @@ butMult.addEventListener('click', multiply);
 butEq.addEventListener('click', equal)
 butDot.addEventListener('click', dot);
 butNeg.addEventListener('click', neg);
-butC.addEventListener('click', clear)
+butC.addEventListener('click', clear);
+butSqrt.addEventListener('click', sqrt);
 
 document.addEventListener('keydown', function(event){
     if (event.key == 'Enter' || event.key == 'Equal'){
