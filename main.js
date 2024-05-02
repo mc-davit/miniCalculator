@@ -35,7 +35,8 @@ let neg = () =>{
     }
 }
 let sqrt = () =>{
-    sumEl.innerHTML = '= ' + Math.round(Math.sqrt(Number(numEl.value)) * 10000000) / 10000000;
+    let result = `${Math.round(eval(numEl.value) * 10000000) / 10000000}`;
+    sumEl.innerHTML = '= ' + Math.sqrt(Number(result));
     numEl.value = '√' + numEl.value;
 }
 let prcent = () =>{
