@@ -79,9 +79,6 @@ button {
 }
 
 #but-eq {
-    grid-column: span 2;
-}
-#but-eq {
     background-color: blue;
     color: white;
 

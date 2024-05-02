@@ -9,6 +9,7 @@ let butDot = document.getElementById('but-.');
 let butNeg = document.getElementById('but-neg');
 let butC = document.getElementById('but-c');
 let butSqrt = document.getElementById('but-sqrt');
+let butPrc = document.getElementById('but-prc');
 
 for(let i = 0; i < 10; i++){
     let but_i = document.getElementById(`but-${i}`)
@@ -35,7 +36,12 @@ let neg = () =>{
 }
 let sqrt = () =>{
     sumEl.innerHTML = '= ' + Math.round(Math.sqrt(Number(numEl.value)) * 10000000) / 10000000;
-    numEl.value = '√' + numEl.value
+    numEl.value = '√' + numEl.value;
+}
+let prcent = () =>{
+    let arr = numEl.value.split(' ')
+    arr[arr.length - 1] /= 100;
+    numEl.value = arr.join(' ')
 }
 let equal = () => {
     let result = `${Math.round(eval(numEl.value) * 10000000) / 10000000}`;
@@ -63,6 +69,7 @@ butDot.addEventListener('click', dot);
 butNeg.addEventListener('click', neg);
 butC.addEventListener('click', clear);
 butSqrt.addEventListener('click', sqrt);
+butPrc.addEventListener('click', prcent);
 
 document.addEventListener('keydown', function(event){
     if (event.key == 'Enter' || event.key == 'Equal'){
