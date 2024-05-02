@@ -116,7 +116,7 @@ let functions = [
 ]
 let gridContainer = document.querySelector('.grid-container')
 for(let i = 0; i < opperations.length; i++){
-    let button = document.createElement('button');
+    let button = document.createElement('div');
     button.id = `but-${i}`;
     button.innerHTML = opperations[i];
     button.addEventListener('click', functions[i]);
@@ -138,5 +138,30 @@ butC.addEventListener('dblclick', allClear)
 document.addEventListener('keydown', function(event){
     if (event.key == 'Enter' || event.key == 'Equal'){
         equal()
+        console.log('pressed')
+    } else if(event.key == 'q') {
+        sqrt()
+        console.log('pressed')
+    } else if(event.key == 'Backspace'){
+        let e = () =>{
+            let arr = numEl.value.split('');
+            arr[arr.length - 1] = '';
+            numEl.value = arr.join('');
+        }
+        e()
+    } else if(event.key == 'Delete'){
+        allClear()
+    } for(let i = 0; i < 10; i++){
+        if(event.key == `${i}`){
+            window['click' + i]();
+        }
+    } if(event.key == '+'){
+        add()
+    } else if(event.key == '-'){
+        subtract()
+    } else if(event.key == '/'){
+        divide()
+    } else if(event.key == '*'){
+        multiply()
     }
 })
