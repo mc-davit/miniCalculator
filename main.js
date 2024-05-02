@@ -1,54 +1,65 @@
-// <===================================================>
-// ყველაფერი თითქმის ჩემი გაკეთებულია
-// საითზე მარტო იყო num1 და num2 წამოყებული
-// <===================================================>
-
-let num1 = document.getElementById("num1-el");
-let num2 = document.getElementById("num2-el");
+let numEl = document.getElementById("numpad-el");
 let sumEl = document.getElementById("sum-el");
-let oppEl = document.getElementById("opp-el");
 let butAdd = document.getElementById("but-add");
 let butSub = document.getElementById("but-sub");
 let butDiv = document.getElementById("but-div");
 let butMult = document.getElementById("but-mult");
+let butEq = document.getElementById("but-eq");
+let butDot = document.getElementById('but-.');
+let butNeg = document.getElementById('but-neg');
+let butC = document.getElementById('but-c');
 
-// Create four functions: add(), subtract(), divide(), multiply()
-// Call the correct function when the user clicks on one of the buttons
-// Perform the given calculation using num1 and num2
-// Render the result of the calculation in the paragraph with id="sum-el"
-let add = () => {
-    let result = Number(num1.value) + Number(num2.value);
-    sumEl.innerHTML = "Sum: " + result;
-    oppEl.innerHTML = "+";
-    // setTimeout(() => sumEl.innerHTML = "Sum: ", 3000)
-    
-    // <===================================================>
-    // თავიდან მინდოდა რომ დროის მერე გამქრალიყვნენ,
-    // მაგრამ ბევრი ღილაკის დაჭერა დროს ურევდა
-    // უფრო მალე ქრება ახალი ტექსტი, რადგან ძველი ფუნქცია დროის ათვლას არ მორჩა
-    // <===================================================>
+for(let i = 0; i < 10; i++){
+    let but_i = document.getElementById(`but-${i}`)
+    but_i.addEventListener('click', () => {
+        numEl.value += i;
+    })
 }
-let subtract = () => {
-    let result = num1.value - num2.value;
-    sumEl.innerHTML = "Sum: " + result;
-    oppEl.innerHTML = "-";
-    // setTimeout(() => sumEl.innerHTML = "Sum: ", 3000)    
+
+let operation = symbol => {
+    numEl.value += symbol;
 }
-let divide = () => {
-    let result = num1.value / num2.value;
-    sumEl.innerHTML = "Sum: " + result;
-    oppEl.innerHTML = "/";
-    // setTimeout(() => sumEl.innerHTML = "Sum: ", 3000)    
+let clear = () =>{
+    numEl.value = '';
+    sumEl.innerHTML = '';
 }
-let multiply = () => {
-    let result = num1.value * num2.value;
-    sumEl.innerHTML = "Sum: " + result;
-    oppEl.innerHTML = "x";
-    // setTimeout(() => sumEl.innerHTML = "Sum: ", 3000)    
+let dot = () =>{
+    numEl.value += '.';
 }
-// E.g. if the user clicks on the "Plus" button, you should render
-// "Sum: 10" (since 8 + 2 = 10) inside the paragraph with id="sum-el"
+let neg = () =>{
+    numEl.value = Number(numEl.value) * -1
+    if(isNaN(numEl.value)){
+        numEl.value = '';
+    }
+}
+let equal = () => {
+    let result = `${Math.round(eval(numEl.value) * 10000000) / 10000000}`;
+    sumEl.innerHTML = "= " + result;
+}
+let add = () =>{
+    operation(' + ')
+}
+let subtract = () =>{
+    operation(' - ')
+}
+let divide = () =>{
+    operation(' / ')
+}
+let multiply = () =>{
+    operation(' * ')
+}
+
 butAdd.addEventListener('click', add);
 butSub.addEventListener('click', subtract);
 butDiv.addEventListener('click', divide);
 butMult.addEventListener('click', multiply);
+butEq.addEventListener('click', equal)
+butDot.addEventListener('click', dot);
+butNeg.addEventListener('click', neg);
+butC.addEventListener('click', clear)
+
+document.addEventListener('keydown', function(event){
+    if (event.key == 'Enter' || event.key == 'Equal'){
+        equal()
+    }
+})

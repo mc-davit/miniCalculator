@@ -3,25 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Calculator</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/10310/10310245.png">
 </head>
 <body>
-    <!------ ძირითადად წამოღებულია, მაგრამ გასასტილად რომ დამჭირდა რასაც class უწერია დავამატე ----->
-    <h1>Beginner JavaScript Calculator</h1>
+    <h1>Beginner Calculator</h1>
     <div class="container">
+        <div class="screen">
+            <div>
+                <input type="text" id="numpad-el">
+                <span id="sum-el"></span>
+            </div>
+        </div>
         <div class="grid-container">
-            <button id="but-add">Add</button>
-            <button id="but-sub">Subtract</button>
-            <button id="but-div">Divide</button>
-            <button id="but-mult">Multiply</button>
+            <button id="but-c">C</button>
+            <button id="but-eq" class="col">=</button>
+            <button id="but-1" class="grid-item-1 row col">1</button>
+            <button id="but-2" class="grid-item-2 row">2</button>
+            <button id="but-3" class="grid-item-3 row">3</button>
+            <button id="but-div" class="row">/</button>
+            <button id="but-4" class="grid-item-4 col">4</button>
+            <button id="but-5" class="grid-item-5">5</button>
+            <button id="but-6" class="grid-item-6">6</button>
+            <button id="but-mult">x</button>
+            <button id="but-7" class="grid-item-7 col">7</button>
+            <button id="but-8" class="grid-item-8">8</button>
+            <button id="but-9" class="grid-item-9">9</button>
+            <button id="but-add">+</button>
+            <button id="but-neg" class="grid-item-10 col">±</button>
+            <button id="but-0" class="grid-item-11">0</button>
+            <button id="but-." class="grid-item-12">.</button>
+            <button id="but-sub">-</button>
         </div>
-        <div>
-            <input type="text" id="num1-el">
-            <span id="opp-el"></span>
-            <input type="text" id="num2-el">
-        </div>
-        <span id="sum-el">Sum: </span>
     </div>
 </body>
 <script src="main.js"></script>
