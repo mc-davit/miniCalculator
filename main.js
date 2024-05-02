@@ -136,7 +136,7 @@ let butC = document.getElementById('but-0')
 butC.addEventListener('dblclick', allClear)
 
 document.addEventListener('keydown', function(event){
-    if (event.key == 'Enter' || event.key == 'Equal'){
+    if (event.key == 'Enter' || event.key == '='){
         equal()
         console.log('pressed')
     } else if(event.key == 'q') {
@@ -163,5 +163,9 @@ document.addEventListener('keydown', function(event){
         divide()
     } else if(event.key == '*'){
         multiply()
+    } else if(event.key == '%'){
+        prcent()
+    } else if(event.key == '.'){
+        dot()
     }
 })
