@@ -9,11 +9,12 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 850px;
+    height: 90vh;
 }
 
 h1 {
     padding-bottom: 50px;
+    font-size: 30px;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: 800;
     color: rgb(96, 194, 255);
@@ -26,6 +27,7 @@ h1 {
     justify-content: space-around;
     border: solid 3px black;
     border-radius: 10px;
+    width: 252px;
 }
 
 .screen {
@@ -37,7 +39,6 @@ h1 {
     background-color: rgba(50, 198, 231, 0.8);
 
     div {
-
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -51,12 +52,11 @@ h1 {
 
 .grid-container {
     display: grid;
-    grid-template-columns: 60px 60px 60px 60px;
-    grid-template-rows: 50px 50px 50px 50px;
+    grid-template: repeat(4, 50px) / repeat(4, 60px);
     gap: 2px;
 }
 
-.grid-container button {
+button {
     font-size: 25px;
     font-weight: bold;
     font-family: Arial, Helvetica, sans-serif;
@@ -101,7 +101,7 @@ h1 {
 }
 
 input {
-    width: 200px;
+    width: 90%;
     font-size: 35px;
     text-align: end;
     padding-right: 15px;
@@ -109,4 +109,33 @@ input {
     outline: none;
     border-bottom: 2px solid black;
     background-color: rgba(50, 198, 231, 0.1);
+}
+
+@media screen and (max-width: 380px) {
+    h1{
+        font-size: 22px;
+        width: 35%;
+    }
+    .container{
+        width: 152px;
+    }
+    .grid-container{
+        grid-template: repeat(5, 35px) / repeat(4, 35px);
+    }
+    button {
+        font-size: 15px;
+    }
+    .screen div{
+        padding-top: 20px;
+    }
+    #sum-el, input{
+        font-size: 20px;
+    }
+    #sum-el{
+        height: 30px;
+        padding: 5px 0;
+    }
+    input{
+        padding-right: 5px;
+    }
 }
