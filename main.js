@@ -138,5 +138,7 @@ butC.addEventListener('dblclick', allClear)
 document.addEventListener('keydown', function(event){
     if (event.key == 'Enter' || event.key == 'Equal'){
         equal()
+    } else if(event.key == 'Q') {
+        sqrt()
     }
 })
