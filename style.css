@@ -12,6 +12,14 @@ body {
     height: 90vh;
 }
 
+button {
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
 h1 {
     padding-bottom: 50px;
     font-size: 30px;
