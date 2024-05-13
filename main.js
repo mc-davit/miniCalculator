@@ -73,9 +73,9 @@ let neg = () =>{
 }
 let sqrt = () =>{
     let input = numEl.value.replace('√', '');
-    let result = `${Math.round(eval(numEl.value) * 10000) / 10000}`;
+    let result = `${Math.round(eval(input) * 10000) / 10000}`;
     sumEl.innerHTML = '= ' + Math.round(Math.sqrt(Number(result))* 10000) / 10000;
-    numEl.value = '√' + numEl.value;
+    numEl.value = '√' + input;
 }
 let prcent = () =>{
     let arr = numEl.value.split(' ');
