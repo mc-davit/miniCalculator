@@ -12,7 +12,7 @@ body {
     height: 90vh;
 }
 
-button {
+div {
     -moz-user-select: -moz-none;
     -khtml-user-select: none;
     -webkit-user-select: none;
@@ -58,6 +58,22 @@ h1 {
     }
 }
 
+#but-6 sup, #but-7 sup {
+    position: absolute;
+    transform: translate(-2px, -3px);
+    font-size: 16px;
+}
+
+#but-20 sup{
+    position: absolute;
+    transform: translate(-10px, -4px);
+}
+#but-20 sub{
+    position: absolute;
+    transform: translateY(5px);
+}
+
+
 .grid-container {
     display: grid;
     grid-template: repeat(4, 50px) / repeat(4, 60px);
@@ -81,11 +97,14 @@ h1 {
     &:hover{
         background-color: rgb(210, 210, 210);
     }
-    &:active{
+    &:active,
+    .active{
         opacity: .69;
     }
 }
-
+.active{
+    opacity: .69;
+}
 #but-3 {
     background-color: blue;
     color: white;

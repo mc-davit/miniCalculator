@@ -1,10 +1,10 @@
-let body = document.querySelector('body');
+const body = document.querySelector('body');
 body.innerHTML = `
 <h1>Beginner Calculator</h1>
 <div class="container">
     <div class="screen">
         <div>
-            <input type="text" id="numpad-el">
+            <input type="text" id="numpad-el" disabled>
             <span id="sum-el"></span>
         </div>
     </div>
@@ -12,161 +12,182 @@ body.innerHTML = `
     </div>
 </div>
 `
-// let header = document.createElement('h1');
-// header.textContent = 'Beginner Calculator';
-// let container = document.createElement('div');
-// container.classList = 'container';
-// body.appendChild(header);
-// body.appendChild(container);
 
-// let screen = document.createElement('div');
-// screen.classList = 'screen';
-// let gridContainer = document.createElement('div');
-// gridContainer.classList = 'grid-container';
-// container.appendChild(screen);
-// container.appendChild(gridContainer);
-
-// let div = document.createElement('div');
-// screen.appendChild(div)
-
-// let input = document.createElement('input')
-// input.type = 'text'
-// input.id = 'numpad-el'
-// let span = document.createElement('span')
-// span.id = 'sum-el'
-// div.appendChild(input)
-// div.appendChild(span)
-// ვიცი რომ ესე ჯობს მაგრამ innerHTML-ის დახმარებით უფრო მოკლე გამოდის 
-// და ჩემი აზრით, ვიზუალურად უფრო კარგია, რადგან HTML-ს ზუსტად იგივე ნაირად წერ 
-
-let numEl = document.getElementById("numpad-el");
-let sumEl = document.getElementById("sum-el");
+const numEl = document.getElementById("numpad-el");
+const sumEl = document.getElementById("sum-el");
 
 for (let i = 0; i < 10; i++){
     window['click' + i] = () =>{
         numEl.value += i;
     }
 }
-// ChatGPT-ის ვერსიაა და ბოლომდე არ ვიცი რას აკეთებს window იმის გარდა,
-// რომ შესაძლებლობას გაძლევს სახელი და ცვლადი შეაერთო
-
-let operation = symbol => {
+const operation = symbol => {
     numEl.value += symbol;
 }
-let clear = () =>{
-    let arr = numEl.value.split('');
+const clear = () =>{
+    const arr = numEl.value.split('');
     arr[arr.length - 1] = '';
     numEl.value = arr.join('');
 }
-let allClear = () =>{
+const allClear = () =>{
     numEl.value = '';
     sumEl.innerHTML = '';
 }
-let dot = () =>{
-    numEl.value += '.';
-}
-let neg = () =>{
-    numEl.value = Number(numEl.value) * -1
-    if(isNaN(numEl.value)){
-        numEl.value = '';
+const dot = () =>{
+    if(!(numEl.value.includes('.'))){
+        numEl.value += '.';
     }
 }
-let sqrt = () =>{
-    let input = numEl.value.replace('√', '');
-    let result = `${Math.round(eval(input) * 10000) / 10000}`;
-    sumEl.innerHTML = '= ' + Math.round(Math.sqrt(Number(result))* 10000) / 10000;
-    numEl.value = '√' + input;
+const neg = () =>{
+    const arr = numEl.value.split(' ');
+    if(!isNaN(parseFloat(arr[arr.length - 1]))){
+        arr[arr.length - 1] /= -1;
+        numEl.value = arr.join(' ');
+    }
 }
-let prcent = () =>{
-    let arr = numEl.value.split(' ');
+const sqrt = () =>{
+    const input = numEl.value.replace('√', '');
+    const result = `${Math.round(eval(input) * 10000) / 10000}`;
+    const root = Math.round(Math.sqrt(Number(result))* 10000) / 10000;
+    numEl.value = '√' + input;
+    if (root >= 0){
+        sumEl.innerHTML = '= ' + root;
+    } else {
+        sumEl.innerHTML = 'undefined';
+    }
+}
+const pow2 = () =>{
+    const arr = numEl.value.split(' ');
+    if(!isNaN(parseFloat(arr[arr.length - 1]))){
+        arr[arr.length - 1] **= 2;
+        numEl.value = arr.join(' ');
+    }
+}
+const pow = () =>{
+    // const arr = numEl.value.split(' ');
+    // if(!isNaN(parseFloat(arr[arr.length - 1]))){
+    //     arr[arr.length - 1] **= 2;
+    //     numEl.value = arr.join(' ');
+    // }
+    numEl.value = 'still working'
+}
+const prcent = () =>{
+    const arr = numEl.value.split(' ');
     if(!isNaN(parseFloat(arr[arr.length - 1]))){
         arr[arr.length - 1] /= 100;
         numEl.value = arr.join(' ');
     }
 }
-let equal = () => {
-    let result = `${Math.round(eval(numEl.value) * 10000) / 10000}`;
+const equal = () => {
+    const result = `${Math.round(eval(numEl.value) * 10000) / 10000}`;
     sumEl.innerHTML = "= " + result;
 }
-let add = () =>{
-    operation('+')
+const add = () =>{
+    operation(' + ');
 }
-let subtract = () =>{
-    operation('-')
+const subtract = () =>{
+    operation(' - ');
 }
-let divide = () =>{
-    operation('/')
+const divide = () =>{
+    operation(' / ');
 }
-let multiply = () =>{
-    operation('*')
+const multiply = () =>{
+    operation(' * ');
+}
+const opParent = () =>{
+    operation('(');
+}
+const clParent = () =>{
+    operation(')');
 }
 
-let opperations = [
+const opperations = [
     'C', '&radic;', '%', '=', 
-    '1', '2', '3', '&div;', 
-    '4', '5', '6', '&times;', 
+    '(', ')', 'x<sup>2</sup>', 'x<sup>y</sup>',
+    '1', '2', '3', '/', 
+    '4', '5', '6', '*', 
     '7', '8', '9','+', 
-    '&pm;', '0', '.', '-'
+    '<sup>+</sup>/<sub>-</sub>', '0', '.', '-'
 ]
-let functions = [
-    clear, sqrt, prcent, 
-    equal, click1, click2, click3, 
+const functions = [
+    clear, sqrt, prcent, equal,
+    opParent, clParent, pow2, pow, 
+    click1, click2, click3, 
     divide, click4, click5, click6, 
     multiply, click7, click8, click9, 
     add, neg, click0, dot, subtract
 ]
-let gridContainer = document.querySelector('.grid-container')
+const gridContainer = document.querySelector('.grid-container')
 for(let i = 0; i < opperations.length; i++){
-    let button = document.createElement('div');
+    const button = document.createElement('div');
     button.id = `but-${i}`;
     button.innerHTML = opperations[i];
     button.addEventListener('click', functions[i]);
     gridContainer.appendChild(button);
 }
-// ესეც ChatGPT-ის დამსახურება
-// gridContainer.innerHTML += `<button id='but-${i}'>${opperations[i]}</button>`
-// window['but' + i] = document.querySelector(`#but-${i}`)
-// window['but' + i].addEventListener('click', functions[i])
-// ---------------------------------------------------
-// let but_i = document.querySelector(`#but-${i}`)
-// but_i.addEventListener('click', functions[i])
-// ეს ორივე ვერსია რატომღაც მხოლოდ ბოლო button-ს უტოვებს event-ს
-// წესით but_i და window['but' + i] ერთი და იგივე რამეს აკეთებს
 
-let butC = document.getElementById('but-0')
+const butC = document.getElementById('but-0')
 butC.addEventListener('dblclick', allClear)
 
 document.addEventListener('keydown', function(event){
-    if (event.key == 'Enter' || event.key == '='){
-        equal()
-        console.log('pressed')
-    } else if(event.key == 'q') {
-        sqrt()
-        console.log('pressed')
-    } else if(event.key == 'Backspace'){
-        let e = () =>{
-            let arr = numEl.value.split('');
-            arr[arr.length - 1] = '';
-            numEl.value = arr.join('');
+    const key = event.key;
+    const index = opperations.indexOf(key);
+    if (index !== -1) {
+        document.getElementById(`but-${index}`).classList.add('active');
+        functions[index]();
+    } else {
+        switch (key) {
+            case 'Enter':
+                document.getElementById('but-3').classList.add('active');
+                equal();
+                break;
+            case 'q':
+                document.getElementById('but-1').classList.add('active');
+                sqrt();
+                break;
+            case 'Backspace':
+                document.getElementById('but-0').classList.add('active');
+                clear();
+                break;
+            case 'Delete':
+                document.getElementById('but-0').classList.add('active');
+                allClear();
+                break;
+            case 'n':
+                document.getElementById('but-20').classList.add('active');
+                neg();
+                break;
+            case 'y':
+                document.getElementById('but-6').classList.add('active');
+                pow2();
+                break;
         }
-        e()
-    } else if(event.key == 'Delete'){
-        allClear()
-    } for(let i = 0; i < 10; i++){
-        if(event.key == `${i}`){
-            window['click' + i]();
-        }
-    } if(event.key == '+'){
-        add()
-    } else if(event.key == '-'){
-        subtract()
-    } else if(event.key == '/'){
-        divide()
-    } else if(event.key == '*'){
-        multiply()
-    } else if(event.key == '%'){
-        prcent()
-    } else if(event.key == '.'){
-        dot()
     }
-})
+});
+
+document.addEventListener('keyup', function(event){
+    const key = event.key;
+    const index = opperations.indexOf(key);
+    if (index !== -1) {
+        document.getElementById(`but-${index}`).classList.remove('active');
+    } else {
+        switch (key) {
+            case 'Enter':
+                document.getElementById('but-3').classList.remove('active');
+                break;
+            case 'q':
+                document.getElementById('but-1').classList.remove('active');
+                break;
+            case 'Backspace':
+            case 'Delete':
+                document.getElementById('but-0').classList.remove('active');
+                break;
+            case 'n':
+                document.getElementById('but-20').classList.remove('active');
+                break;
+            case 'y':
+                document.getElementById('but-6').classList.remove('active');
+                break;
+        }
+    }
+});
