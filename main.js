@@ -34,8 +34,10 @@ const allClear = () =>{
     sumEl.innerHTML = '';
 }
 const dot = () =>{
-    if(!(numEl.value.includes('.'))){
-        numEl.value += '.';
+    const arr = numEl.value.split(' ');
+    if(!(arr[arr.length - 1].includes('.'))){
+        arr[arr.length - 1] += '.';
+        numEl.value = arr.join('');
     }
 }
 const neg = () =>{
@@ -64,12 +66,7 @@ const pow2 = () =>{
     }
 }
 const pow = () =>{
-    // const arr = numEl.value.split(' ');
-    // if(!isNaN(parseFloat(arr[arr.length - 1]))){
-    //     arr[arr.length - 1] **= 2;
-    //     numEl.value = arr.join(' ');
-    // }
-    numEl.value = 'still working'
+    operation(' ** ');
 }
 const prcent = () =>{
     const arr = numEl.value.split(' ');
@@ -159,7 +156,7 @@ document.addEventListener('keydown', function(event){
                 break;
             case 'y':
                 document.getElementById('but-6').classList.add('active');
-                pow2();
+                pow();
                 break;
         }
     }
