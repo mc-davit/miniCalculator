@@ -4,7 +4,7 @@ body.innerHTML = `
 <div class="container">
     <div class="screen">
         <div>
-            <input type="text" id="numpad-el" disabled>
+            <input type="text" id="numpad-el">
             <span id="sum-el"></span>
         </div>
     </div>
