@@ -16,10 +16,15 @@ body.innerHTML = `
 const numEl = document.getElementById("numpad-el");
 const sumEl = document.getElementById("sum-el");
 
+let clicks = []
+let gio = [];
 for (let i = 0; i < 10; i++){
-    window['click' + i] = () =>{
-        numEl.value += i;
-    }
+    gio.push(`${i}`)
+    gio.forEach( () =>{
+        clicks[i] = () =>{
+                numEl.value += i;
+            };
+    })
 }
 const operation = symbol => {
     numEl.value += symbol;
@@ -37,7 +42,7 @@ const dot = () =>{
     const arr = numEl.value.split(' ');
     if(!(arr[arr.length - 1].includes('.'))){
         arr[arr.length - 1] += '.';
-        numEl.value = arr.join('');
+        numEl.value = arr.join(' ');
     }
 }
 const neg = () =>{
@@ -109,10 +114,10 @@ const opperations = [
 const functions = [
     clear, sqrt, prcent, equal,
     opParent, clParent, pow2, pow, 
-    click1, click2, click3, 
-    divide, click4, click5, click6, 
-    multiply, click7, click8, click9, 
-    add, neg, click0, dot, subtract
+    clicks[1], clicks[2], clicks[3], 
+    divide, clicks[4], clicks[5], clicks[6], 
+    multiply, clicks[7], clicks[8], clicks[9], 
+    add, neg, clicks[0], dot, subtract
 ]
 const gridContainer = document.querySelector('.grid-container')
 for(let i = 0; i < opperations.length; i++){
