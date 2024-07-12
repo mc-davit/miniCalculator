@@ -4,7 +4,7 @@ body.innerHTML = `
 <div class="container">
     <div class="screen">
         <div>
-            <input type="text" id="numpad-el" disabled>
+            <input type="text" id="numpad-el">
             <span id="sum-el"></span>
         </div>
     </div>
@@ -16,10 +16,15 @@ body.innerHTML = `
 const numEl = document.getElementById("numpad-el");
 const sumEl = document.getElementById("sum-el");
 
+let clicks = []
+let gio = [];
 for (let i = 0; i < 10; i++){
-    window['click' + i] = () =>{
-        numEl.value += i;
-    }
+    gio.push(`${i}`)
+    gio.forEach( () =>{
+        clicks[i] = () =>{
+                numEl.value += i;
+            };
+    })
 }
 const operation = symbol => {
     numEl.value += symbol;
@@ -34,8 +39,10 @@ const allClear = () =>{
     sumEl.innerHTML = '';
 }
 const dot = () =>{
-    if(!(numEl.value.includes('.'))){
-        numEl.value += '.';
+    const arr = numEl.value.split(' ');
+    if(!(arr[arr.length - 1].includes('.'))){
+        arr[arr.length - 1] += '.';
+        numEl.value = arr.join(' ');
     }
 }
 const neg = () =>{
@@ -64,12 +71,7 @@ const pow2 = () =>{
     }
 }
 const pow = () =>{
-    // const arr = numEl.value.split(' ');
-    // if(!isNaN(parseFloat(arr[arr.length - 1]))){
-    //     arr[arr.length - 1] **= 2;
-    //     numEl.value = arr.join(' ');
-    // }
-    numEl.value = 'still working'
+    operation(' ** ');
 }
 const prcent = () =>{
     const arr = numEl.value.split(' ');
@@ -112,10 +114,10 @@ const opperations = [
 const functions = [
     clear, sqrt, prcent, equal,
     opParent, clParent, pow2, pow, 
-    click1, click2, click3, 
-    divide, click4, click5, click6, 
-    multiply, click7, click8, click9, 
-    add, neg, click0, dot, subtract
+    clicks[1], clicks[2], clicks[3], 
+    divide, clicks[4], clicks[5], clicks[6], 
+    multiply, clicks[7], clicks[8], clicks[9], 
+    add, neg, clicks[0], dot, subtract
 ]
 const gridContainer = document.querySelector('.grid-container')
 for(let i = 0; i < opperations.length; i++){
@@ -159,7 +161,7 @@ document.addEventListener('keydown', function(event){
                 break;
             case 'y':
                 document.getElementById('but-6').classList.add('active');
-                pow2();
+                pow();
                 break;
         }
     }
