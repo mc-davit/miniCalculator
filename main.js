@@ -4,7 +4,7 @@ body.innerHTML = `
 <div class="container">
     <div class="screen">
         <div>
-            <input type="text" id="numpad-el">
+            <p id="numpad-el"></p>
             <span id="sum-el"></span>
         </div>
     </div>
@@ -17,84 +17,87 @@ const numEl = document.getElementById("numpad-el");
 const sumEl = document.getElementById("sum-el");
 
 let clicks = []
-let gio = [];
 for (let i = 0; i < 10; i++){
-    gio.push(`${i}`)
-    gio.forEach( () =>{
-        clicks[i] = () =>{
-                numEl.value += i;
-            };
-    })
+    clicks[i] = () =>{
+            numEl.innerHTML += i;
+        };
 }
 const operation = symbol => {
-    numEl.value += symbol;
+    numEl.innerHTML += symbol;
 }
 const clear = () =>{
-    const arr = numEl.value.split('');
-    arr[arr.length - 1] = '';
-    numEl.value = arr.join('');
+    numEl.innerHTML = numEl.innerHTML.slice(0, -1);
 }
 const allClear = () =>{
-    numEl.value = '';
+    numEl.innerHTML = '';
     sumEl.innerHTML = '';
 }
-const dot = () =>{
-    const arr = numEl.value.split(' ');
-    if(!(arr[arr.length - 1].includes('.'))){
-        arr[arr.length - 1] += '.';
-        numEl.value = arr.join(' ');
+const dot = () => {
+    const lastNumberMatch = numEl.innerHTML.match(/(\d+(\.\d*)?)$/);
+    const lastNumber = lastNumberMatch ? lastNumberMatch[0] : '';
+    if (!lastNumber.includes('.')) {
+        numEl.innerHTML += '.';
     }
-}
-const neg = () =>{
-    const arr = numEl.value.split(' ');
-    if(!isNaN(parseFloat(arr[arr.length - 1]))){
-        arr[arr.length - 1] /= -1;
-        numEl.value = arr.join(' ');
+};
+const neg = () => {
+    const lastNumberMatch = numEl.innerHTML.match(/-?\d+(\.\d*)?$/);
+    if (lastNumberMatch) {
+        const lastNumber = lastNumberMatch[0];
+        const negatedNumber = parseFloat(lastNumber) * -1;
+        numEl.innerHTML = numEl.innerHTML.slice(0, -lastNumber.length) + negatedNumber;
     }
-}
+};
 const sqrt = () =>{
-    const input = numEl.value.replace('√', '');
+    const input = numEl.innerHTML.replace('√', '');
     const result = `${Math.round(eval(input) * 10000) / 10000}`;
     const root = Math.round(Math.sqrt(Number(result))* 10000) / 10000;
-    numEl.value = '√' + input;
+    numEl.innerHTML = '√' + input;
     if (root >= 0){
         sumEl.innerHTML = '= ' + root;
     } else {
         sumEl.innerHTML = 'undefined';
     }
 }
-const pow2 = () =>{
-    const arr = numEl.value.split(' ');
-    if(!isNaN(parseFloat(arr[arr.length - 1]))){
-        arr[arr.length - 1] **= 2;
-        numEl.value = arr.join(' ');
+const pow2 = () => {
+    const lastNumberMatch = numEl.innerHTML.match(/(\d+(\.\d*)?)$/);
+    if (lastNumberMatch) {
+        const lastNumber = lastNumberMatch[0];
+        const squaredNumber = Math.pow(parseFloat(lastNumber), 2);
+        numEl.innerHTML = numEl.innerHTML.slice(0, -lastNumber.length) + squaredNumber;
     }
-}
+};
 const pow = () =>{
-    operation(' ** ');
+    operation('**');
 }
-const prcent = () =>{
-    const arr = numEl.value.split(' ');
-    if(!isNaN(parseFloat(arr[arr.length - 1]))){
-        arr[arr.length - 1] /= 100;
-        numEl.value = arr.join(' ');
+const prcent = () => {
+    const lastNumberMatch = numEl.innerHTML.match(/(\d+(\.\d*)?)$/);
+    if (lastNumberMatch) {
+        const lastNumber = lastNumberMatch[0];
+        const percentage = parseFloat(lastNumber) / 100;
+        numEl.innerHTML = numEl.innerHTML.slice(0, -lastNumber.length) + percentage;
     }
-}
+};
 const equal = () => {
-    const result = `${Math.round(eval(numEl.value) * 10000) / 10000}`;
+    let result = `${Math.round(eval(numEl.innerHTML) * 10000) / 10000}`;
+    const threshold = 9999999;
+    if (result > threshold) {
+        result = Number(result).toExponential(2);
+    } else {
+        result = Number(result).toString();
+    }
     sumEl.innerHTML = "= " + result;
 }
 const add = () =>{
-    operation(' + ');
+    operation('+');
 }
 const subtract = () =>{
-    operation(' - ');
+    operation('-');
 }
 const divide = () =>{
-    operation(' / ');
+    operation('/');
 }
 const multiply = () =>{
-    operation(' * ');
+    operation('*');
 }
 const opParent = () =>{
     operation('(');
@@ -103,7 +106,7 @@ const clParent = () =>{
     operation(')');
 }
 
-const opperations = [
+const operations = [
     'C', '&radic;', '%', '=', 
     '(', ')', 'x<sup>2</sup>', 'x<sup>y</sup>',
     '1', '2', '3', '/', 
@@ -120,10 +123,23 @@ const functions = [
     add, neg, clicks[0], dot, subtract
 ]
 const gridContainer = document.querySelector('.grid-container')
-for(let i = 0; i < opperations.length; i++){
+const titles = {
+    0: `'Backspace' clear
+'Delete' / 'Ctrl+Backspace' all clear`,
+    1: `Press 'q'`,
+    2: ``,
+    3: `Press '=' or 'enter'`,
+    6: ``,
+    7: `Press 'y'`,
+    19: `Press '+' (shift + =)`,
+    20: `Press 'n'`
+}
+let counter = 0
+for(let i = 0; i < operations.length; i++){
     const button = document.createElement('div');
     button.id = `but-${i}`;
-    button.innerHTML = opperations[i];
+    button.innerHTML = operations[i];
+    button.title = titles[i] || `Press '${operations[i]}'`;
     button.addEventListener('click', functions[i]);
     gridContainer.appendChild(button);
 }
@@ -133,8 +149,8 @@ butC.addEventListener('dblclick', allClear)
 
 document.addEventListener('keydown', function(event){
     const key = event.key;
-    const index = opperations.indexOf(key);
-    if (index !== -1) {
+    const index = operations.indexOf(key);
+    if (index !== -1 && index !== 0) {
         document.getElementById(`but-${index}`).classList.add('active');
         functions[index]();
     } else {
@@ -149,7 +165,10 @@ document.addEventListener('keydown', function(event){
                 break;
             case 'Backspace':
                 document.getElementById('but-0').classList.add('active');
-                clear();
+                if (event.ctrlKey)
+                    allClear()
+                else
+                    clear();
                 break;
             case 'Delete':
                 document.getElementById('but-0').classList.add('active');
@@ -160,7 +179,7 @@ document.addEventListener('keydown', function(event){
                 neg();
                 break;
             case 'y':
-                document.getElementById('but-6').classList.add('active');
+                document.getElementById('but-7').classList.add('active');
                 pow();
                 break;
         }
@@ -169,8 +188,8 @@ document.addEventListener('keydown', function(event){
 
 document.addEventListener('keyup', function(event){
     const key = event.key;
-    const index = opperations.indexOf(key);
-    if (index !== -1) {
+    const index = operations.indexOf(key);
+    if (index !== -1 && index !== 0) {
         document.getElementById(`but-${index}`).classList.remove('active');
     } else {
         switch (key) {
@@ -180,15 +199,25 @@ document.addEventListener('keyup', function(event){
             case 'q':
                 document.getElementById('but-1').classList.remove('active');
                 break;
+
             case 'Backspace':
+                if (event.ctrlKey)
+                    setTimeout(() => {
+                        document.getElementById('but-0').classList.remove('active')
+                    }, 350)
+                else
+                    document.getElementById('but-0').classList.remove('active');
+                break;
             case 'Delete':
-                document.getElementById('but-0').classList.remove('active');
+                setTimeout(() => {
+                    document.getElementById('but-0').classList.remove('active')
+                }, 350)
                 break;
             case 'n':
                 document.getElementById('but-20').classList.remove('active');
                 break;
             case 'y':
-                document.getElementById('but-6').classList.remove('active');
+                document.getElementById('but-7').classList.remove('active');
                 break;
         }
     }

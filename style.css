@@ -58,6 +58,18 @@ h1 {
     }
 }
 
+#numpad-el {
+    height: 50px;
+    width: 200px;
+    border-bottom: 3px solid black;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 35px;
+    display: flex;
+    align-items: end;
+    justify-content: end;
+    overflow: hidden;
+}
+
 #but-6 sup, #but-7 sup {
     position: absolute;
     transform: translate(-2px, -3px);
@@ -121,6 +133,8 @@ h1 {
     font-size: 35px;
     padding: 20px 0;
     height: 80px;
+    max-width: 200px;
+    overflow: hidden;
     font-family: Arial, Helvetica, sans-serif;
 }
 
