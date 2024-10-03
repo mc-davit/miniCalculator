@@ -4,7 +4,7 @@ body.innerHTML = `
 <div class="container">
     <div class="screen">
         <div>
-            <p id="numpad-el"></p>
+            <input id="numpad-el"></input>
             <span id="sum-el"></span>
         </div>
     </div>
@@ -19,39 +19,39 @@ const sumEl = document.getElementById("sum-el");
 let clicks = []
 for (let i = 0; i < 10; i++){
     clicks[i] = () =>{
-            numEl.innerHTML += i;
+            numEl.value += i;
         };
 }
 const operation = symbol => {
-    numEl.innerHTML += symbol;
+    numEl.value += symbol;
 }
 const clear = () =>{
-    numEl.innerHTML = numEl.innerHTML.slice(0, -1);
+    numEl.value = numEl.value.slice(0, -1);
 }
 const allClear = () =>{
-    numEl.innerHTML = '';
+    numEl.value = '';
     sumEl.innerHTML = '';
 }
 const dot = () => {
-    const lastNumberMatch = numEl.innerHTML.match(/(\d+(\.\d*)?)$/);
+    const lastNumberMatch = numEl.value.match(/(\d+(\.\d*)?)$/);
     const lastNumber = lastNumberMatch ? lastNumberMatch[0] : '';
     if (!lastNumber.includes('.')) {
-        numEl.innerHTML += '.';
+        numEl.value += '.';
     }
 };
 const neg = () => {
-    const lastNumberMatch = numEl.innerHTML.match(/-?\d+(\.\d*)?$/);
+    const lastNumberMatch = numEl.value.match(/-?\d+(\.\d*)?$/);
     if (lastNumberMatch) {
         const lastNumber = lastNumberMatch[0];
         const negatedNumber = parseFloat(lastNumber) * -1;
-        numEl.innerHTML = numEl.innerHTML.slice(0, -lastNumber.length) + negatedNumber;
+        numEl.value = numEl.value.slice(0, -lastNumber.length) + negatedNumber;
     }
 };
 const sqrt = () =>{
-    const input = numEl.innerHTML.replace('√', '');
-    const result = `${Math.round(eval(input) * 10000) / 10000}`;
+    const input = numEl.value.replace('√', '');
+    const result = `${Math.round(math.evaluate(input) * 10000) / 10000}`;
     const root = Math.round(Math.sqrt(Number(result))* 10000) / 10000;
-    numEl.innerHTML = '√' + input;
+    numEl.value = '√' + input;
     if (root >= 0){
         sumEl.innerHTML = '= ' + root;
     } else {
@@ -59,26 +59,26 @@ const sqrt = () =>{
     }
 }
 const pow2 = () => {
-    const lastNumberMatch = numEl.innerHTML.match(/(\d+(\.\d*)?)$/);
+    const lastNumberMatch = numEl.value.match(/(\d+(\.\d*)?)$/);
     if (lastNumberMatch) {
         const lastNumber = lastNumberMatch[0];
         const squaredNumber = Math.pow(parseFloat(lastNumber), 2);
-        numEl.innerHTML = numEl.innerHTML.slice(0, -lastNumber.length) + squaredNumber;
+        numEl.value = numEl.value.slice(0, -lastNumber.length) + squaredNumber;
     }
 };
 const pow = () =>{
     operation('**');
 }
 const prcent = () => {
-    const lastNumberMatch = numEl.innerHTML.match(/(\d+(\.\d*)?)$/);
+    const lastNumberMatch = numEl.value.match(/(\d+(\.\d*)?)$/);
     if (lastNumberMatch) {
         const lastNumber = lastNumberMatch[0];
         const percentage = parseFloat(lastNumber) / 100;
-        numEl.innerHTML = numEl.innerHTML.slice(0, -lastNumber.length) + percentage;
+        numEl.value = numEl.value.slice(0, -lastNumber.length) + percentage;
     }
 };
 const equal = () => {
-    let result = `${Math.round(eval(numEl.innerHTML) * 10000) / 10000}`;
+    let result = `${Math.round(math.evaluate(numEl.value) * 10000) / 10000}`;
     const threshold = 9999999;
     if (result > threshold) {
         result = Number(result).toExponential(2);
@@ -151,8 +151,10 @@ document.addEventListener('keydown', function(event){
     const key = event.key;
     const index = operations.indexOf(key);
     if (index !== -1 && index !== 0) {
-        document.getElementById(`but-${index}`).classList.add('active');
-        functions[index]();
+        if (document.activeElement !== numEl) {
+            document.getElementById(`but-${index}`).classList.add('active');
+            functions[index]();
+        }
     } else {
         switch (key) {
             case 'Enter':
@@ -164,15 +166,19 @@ document.addEventListener('keydown', function(event){
                 sqrt();
                 break;
             case 'Backspace':
-                document.getElementById('but-0').classList.add('active');
-                if (event.ctrlKey)
-                    allClear()
-                else
-                    clear();
+                if (document.activeElement !== numEl){
+                    document.getElementById('but-0').classList.add('active');
+                    if (event.ctrlKey)
+                        allClear()
+                    else
+                        clear();
+                }
                 break;
             case 'Delete':
-                document.getElementById('but-0').classList.add('active');
-                allClear();
+                if (document.activeElement !== numEl){
+                    document.getElementById('but-0').classList.add('active');
+                    allClear();
+                }
                 break;
             case 'n':
                 document.getElementById('but-20').classList.add('active');
