@@ -10,6 +10,8 @@ body {
     align-items: center;
     justify-content: center;
     height: 90vh;
+    min-width: 381px;
+    min-height: 560px;
 }
 
 div {
